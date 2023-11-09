@@ -1,0 +1,49 @@
+﻿
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+<select class="selectclass"></select>
+<select class="districtclass" ></select>
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+
+            type: "GET",
+            url: "/Home/GetCities",
+            success: function (data) {
+
+                $.each(data, function (index, data) {
+
+                    $(".selectclass").append("<option class='optionclass' value=" + data.id + ">" + data.name + "</option>")
+
+                });
+            }
+        });
+
+        $(".selectclass").change(function (index, data) {
+
+            $.ajax({
+
+                type: "POST",
+                data: { cityid: $(this).val() },
+                url: "/Home/GetDistrict",
+                success: function (data) {
+                    
+                    //select'in içerisindeki option'lar silinsin
+                    $(".districtclass option").remove();
+                    $.each(data, function (index, data) {
+
+                        $(".districtclass").append("<option value=" + data.id + ">" + data.name + "</option>")
+
+                    });
+
+                }
+               
+            });
+
+        });
+    });
+
+
+</script>
